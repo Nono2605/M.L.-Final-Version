@@ -18,7 +18,6 @@ export default function HomePage() {
                 className="h-12 w-auto"
               />
               <div>
-                <h1 className="text-xl font-bold text-gray-900">SuisseToiture®️</h1>
                 <p className="text-sm text-swiss-slate">
                   Votre expert en nettoyage professionnel à vapeur en Suisse
                 </p>

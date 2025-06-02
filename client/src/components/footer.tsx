@@ -15,7 +15,6 @@ export function Footer() {
                 className="h-12 w-auto filter brightness-0 invert"
               />
               <div>
-                <h3 className="text-xl font-bold text-white">SuisseToiture®️</h3>
                 <p className="text-blue-200">Expert en nettoyage professionnel à vapeur</p>
               </div>
             </div>
