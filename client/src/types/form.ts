@@ -3,7 +3,12 @@ export interface FormData {
   service: 'toiture' | 'facade' | 'terrasse' | '';
   subServices: string[];
   superficie: string;
-  adresse: string;
+  nom: string;
+  prenom: string;
+  rue: string;
+  numero: string;
+  codePostal: string;
+  ville: string;
   email: string;
   telephone: string;
   whatsapp: string;
@@ -14,4 +19,4 @@ export interface StepValidation {
   errors?: string[];
 }
 
-export type FormStep = 1 | 2 | 3 | 4 | 5 | 6;
+export type FormStep = 1 | 2 | 3 | 4 | 5 | 6 | 7;

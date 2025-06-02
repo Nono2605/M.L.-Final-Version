@@ -18,7 +18,12 @@ const initialFormData: FormData = {
   service: '',
   subServices: [],
   superficie: '',
-  adresse: '',
+  nom: '',
+  prenom: '',
+  rue: '',
+  numero: '',
+  codePostal: '',
+  ville: '',
   email: '',
   telephone: '',
   whatsapp: '',
@@ -28,7 +33,8 @@ const stepTitles = [
   'Type de projet',
   'Service souhaité',
   'Type d\'intervention',
-  'Détails du projet',
+  'Superficie',
+  'Vos coordonnées',
   'Contact',
   'Confirmation'
 ];
@@ -45,7 +51,7 @@ export function StepWizard() {
         service: data.service,
         subServices: data.subServices,
         superficie: parseInt(data.superficie),
-        adresse: data.adresse || null,
+        adresse: `${data.numero} ${data.rue}, ${data.codePostal} ${data.ville}` || null,
         email: data.email || null,
         telephone: data.telephone || null,
         whatsapp: data.whatsapp || null,
@@ -155,11 +161,12 @@ export function StepWizard() {
         {currentStep === 3 && <StepThree formData={formData} updateFormData={updateFormData} />}
         {currentStep === 4 && <StepFour formData={formData} updateFormData={updateFormData} />}
         {currentStep === 5 && <StepFive formData={formData} updateFormData={updateFormData} />}
-        {currentStep === 6 && <StepSix formData={formData} onReset={resetForm} />}
+        {currentStep === 6 && <StepSix formData={formData} updateFormData={updateFormData} />}
+        {currentStep === 7 && <StepSeven formData={formData} onReset={resetForm} />}
       </div>
 
       {/* Navigation */}
-      {currentStep < 6 && (
+      {currentStep < 7 && (
         <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
           <Button
             variant="outline"
@@ -176,7 +183,7 @@ export function StepWizard() {
             disabled={!canProceed || submitQuoteMutation.isPending}
             className="bg-swiss-blue hover:bg-blue-800"
           >
-            {currentStep === 5 ? (
+            {currentStep === 6 ? (
               submitQuoteMutation.isPending ? 'Envoi...' : 'Envoyer la demande'
             ) : (
               'Suivant'
