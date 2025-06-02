@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'wouter';
+import logoPath from '@assets/Logo_Mahmoud-02.png';
 
 export default function ConditionsGeneralesPage() {
   return (
@@ -11,7 +12,7 @@ export default function ConditionsGeneralesPage() {
           <div className="flex items-center justify-between">
             <Link href="/">
               <img 
-                src="/attached_assets/Logo_Mahmoud-02.png" 
+                src={logoPath} 
                 alt="SuisseToiture"
                 className="h-12 cursor-pointer"
               />
