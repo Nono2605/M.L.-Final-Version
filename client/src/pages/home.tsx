@@ -2,6 +2,7 @@ import { StepWizard } from '@/components/step-wizard';
 import { ServicesSection } from '@/components/services-section';
 import { Footer } from '@/components/footer';
 import { Home, Mail, Phone } from 'lucide-react';
+import logoPath from '@assets/Logo_Mahmoud-02.png';
 
 export default function HomePage() {
   return (
@@ -12,7 +13,7 @@ export default function HomePage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <img 
-                src="/attached_assets/Logo_Mahmoud-02.png" 
+                src={logoPath} 
                 alt="SuisseToiture Logo" 
                 className="h-12 w-auto"
               />

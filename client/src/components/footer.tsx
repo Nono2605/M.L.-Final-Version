@@ -1,4 +1,5 @@
 import { Home, Mail, Phone } from 'lucide-react';
+import logoPath from '@assets/Logo_Mahmoud-02.png';
 
 export function Footer() {
   return (
@@ -9,7 +10,7 @@ export function Footer() {
           <div className="md:col-span-2">
             <div className="flex items-center space-x-3 mb-4">
               <img 
-                src="/attached_assets/Logo_Mahmoud-02.png" 
+                src={logoPath} 
                 alt="SuisseToiture Logo" 
                 className="h-12 w-auto filter brightness-0 invert"
               />
