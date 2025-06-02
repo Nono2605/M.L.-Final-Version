@@ -1,4 +1,5 @@
 import { Home, Mail, Phone } from 'lucide-react';
+import { Link } from 'wouter';
 import logoPath from '@assets/Logo_Mahmoud-02.png';
 
 export function Footer() {
@@ -50,21 +51,32 @@ export function Footer() {
           <div>
             <h4 className="font-semibold text-white mb-4">Informations</h4>
             <div className="space-y-2 text-blue-100">
-              <a href="#" className="block hover:text-white transition-colors">
-                Mentions légales
-              </a>
-              <a href="#" className="block hover:text-white transition-colors">
-                Politique de confidentialité
-              </a>
-              <a href="#" className="block hover:text-white transition-colors">
-                Conditions générales
-              </a>
+              <Link href="/informations">
+                <span className="block hover:text-white transition-colors cursor-pointer">
+                  À propos
+                </span>
+              </Link>
+              <Link href="/mentions-legales">
+                <span className="block hover:text-white transition-colors cursor-pointer">
+                  Mentions légales
+                </span>
+              </Link>
+              <Link href="/politique-confidentialite">
+                <span className="block hover:text-white transition-colors cursor-pointer">
+                  Politique de confidentialité
+                </span>
+              </Link>
+              <Link href="/conditions-generales">
+                <span className="block hover:text-white transition-colors cursor-pointer">
+                  Conditions générales
+                </span>
+              </Link>
             </div>
           </div>
         </div>
         
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-blue-200">
-          <p>&copy; 2024 SuisseToiture®️. Tous droits réservés.</p>
+          <p>&copy; 2025 SuisseToiture®️. Tous droits réservés.</p>
         </div>
       </div>
     </footer>

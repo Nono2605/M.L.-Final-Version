@@ -6,6 +6,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import LandingPage from "@/pages/landing";
 import HomePage from "@/pages/home";
 import AdminPage from "@/pages/admin";
+import InformationsPage from "@/pages/informations";
+import MentionsLegalesPage from "@/pages/mentions-legales";
+import PolitiqueConfidentialitePage from "@/pages/politique-confidentialite";
+import ConditionsGeneralesPage from "@/pages/conditions-generales";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -14,6 +18,10 @@ function Router() {
       <Route path="/" component={LandingPage} />
       <Route path="/devis" component={HomePage} />
       <Route path="/admin" component={AdminPage} />
+      <Route path="/informations" component={InformationsPage} />
+      <Route path="/mentions-legales" component={MentionsLegalesPage} />
+      <Route path="/politique-confidentialite" component={PolitiqueConfidentialitePage} />
+      <Route path="/conditions-generales" component={ConditionsGeneralesPage} />
       <Route component={NotFound} />
     </Switch>
   );
