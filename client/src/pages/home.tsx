@@ -2,6 +2,7 @@ import { StepWizard } from '@/components/step-wizard';
 import { ServicesSection } from '@/components/services-section';
 import { Footer } from '@/components/footer';
 import { Home, Mail, Phone } from 'lucide-react';
+import { Link } from 'wouter';
 import logoPath from '@assets/Logo_Mahmoud-02.png';
 
 export default function HomePage() {
@@ -12,11 +13,13 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <img 
-                src={logoPath} 
-                alt="SuisseToiture Logo" 
-                className="h-12 w-auto"
-              />
+              <a href="/">
+                <img 
+                  src={logoPath} 
+                  alt="SuisseToiture Logo" 
+                  className="h-12 w-auto cursor-pointer hover:opacity-80 transition-opacity"
+                />
+              </a>
               <div>
                 <p className="text-sm text-swiss-slate">
                   Votre expert en nettoyage professionnel à vapeur en Suisse
