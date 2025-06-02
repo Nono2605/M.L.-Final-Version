@@ -28,11 +28,11 @@ export default function LandingPage() {
             <div className="hidden md:flex items-center space-x-6 text-sm text-swiss-slate">
               <div className="flex items-center">
                 <Phone className="w-4 h-4 mr-2" />
-                +41 XX XXX XX XX
+                +41 78 690 33 34
               </div>
               <div className="flex items-center">
                 <Mail className="w-4 h-4 mr-2" />
-                contact@suissetoiture.ch
+                info@suissetoiture.ch
               </div>
 
             </div>
@@ -171,7 +171,7 @@ export default function LandingPage() {
               <CardContent className="p-6 text-center">
                 <Phone className="w-8 h-8 text-swiss-blue mx-auto mb-4" />
                 <h3 className="font-semibold text-gray-900 mb-2">Téléphone</h3>
-                <p className="text-swiss-slate">+41 XX XXX XX XX</p>
+                <p className="text-swiss-slate">+41 78 690 33 34</p>
                 <p className="text-sm text-swiss-slate mt-1">Lun-Ven 8h-18h</p>
               </CardContent>
             </Card>
@@ -180,7 +180,7 @@ export default function LandingPage() {
               <CardContent className="p-6 text-center">
                 <Mail className="w-8 h-8 text-swiss-blue mx-auto mb-4" />
                 <h3 className="font-semibold text-gray-900 mb-2">Email</h3>
-                <p className="text-swiss-slate">contact@suissetoiture.ch</p>
+                <p className="text-swiss-slate">info@suissetoiture.ch</p>
                 <p className="text-sm text-swiss-slate mt-1">Réponse sous 24h</p>
               </CardContent>
             </Card>

@@ -31,11 +31,11 @@ export function Footer() {
             <div className="space-y-3 text-blue-100">
               <div className="flex items-center">
                 <Mail className="w-4 h-4 mr-3 text-blue-300" />
-                <span>contact@suissetoiture.ch</span>
+                <span>info@suissetoiture.ch</span>
               </div>
               <div className="flex items-center">
                 <Phone className="w-4 h-4 mr-3 text-blue-300" />
-                <span>+41 XX XXX XX XX</span>
+                <span>+41 78 690 33 34</span>
               </div>
               <div className="flex items-center">
                 <svg className="w-4 h-4 mr-3 text-blue-300" viewBox="0 0 24 24" fill="currentColor">
