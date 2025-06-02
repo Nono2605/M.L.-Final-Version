@@ -38,36 +38,16 @@ const projectTypeLabels = {
   immeuble: 'Immeuble'
 };
 
-export default function AdminPage() {
+// Composant séparé pour la partie authentifiée
+function AuthenticatedAdminPage({ onLogout }: { onLogout: () => void }) {
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // Toujours appeler useQuery, mais le désactiver si pas authentifié
   const { data: quotes = [], isLoading } = useQuery<Quote[]>({
     queryKey: ['/api/quotes'],
-    enabled: isAuthenticated, // Désactiver la requête si pas authentifié
   });
-
-  useEffect(() => {
-    // Vérifier si l'utilisateur est déjà authentifié
-    const authStatus = localStorage.getItem('admin_authenticated');
-    if (authStatus === 'true') {
-      setIsAuthenticated(true);
-    }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('admin_authenticated');
-    setIsAuthenticated(false);
-  };
-
-  // Afficher la page d'authentification si pas connecté
-  if (!isAuthenticated) {
-    return <AdminAuth onAuthenticated={() => setIsAuthenticated(true)} />;
-  }
 
   const updateQuoteMutation = useMutation({
     mutationFn: async ({ id, updates }: { id: number; updates: UpdateQuote }) => {
@@ -143,7 +123,7 @@ export default function AdminPage() {
               <Button 
                 variant="outline" 
                 size="sm" 
-                onClick={handleLogout}
+                onClick={onLogout}
                 className="text-red-600 hover:text-red-700 hover:bg-red-50"
               >
                 Déconnexion
@@ -344,6 +324,32 @@ export default function AdminPage() {
       </div>
     </div>
   );
+}
+
+// Composant principal qui gère l'authentification
+export default function AdminPage() {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Vérifier si l'utilisateur est déjà authentifié
+    const authStatus = localStorage.getItem('admin_authenticated');
+    if (authStatus === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('admin_authenticated');
+    setIsAuthenticated(false);
+  };
+
+  // Afficher la page d'authentification si pas connecté
+  if (!isAuthenticated) {
+    return <AdminAuth onAuthenticated={() => setIsAuthenticated(true)} />;
+  }
+
+  // Afficher la page admin authentifiée
+  return <AuthenticatedAdminPage onLogout={handleLogout} />;
 }
 
 function QuoteDetailDialog({ 
