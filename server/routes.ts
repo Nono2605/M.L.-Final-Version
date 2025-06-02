@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertQuoteSchema } from "@shared/schema";
+import { insertQuoteSchema, updateQuoteSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -71,6 +71,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ 
         message: "Erreur lors de la récupération du devis" 
       });
+    }
+  });
+
+  // Update a quote (for admin use)
+  app.patch("/api/quotes/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ 
+          message: "ID invalide" 
+        });
+      }
+
+      const validatedData = updateQuoteSchema.parse(req.body);
+      const quote = await storage.updateQuote(id, validatedData);
+      
+      if (!quote) {
+        return res.status(404).json({ 
+          message: "Devis non trouvé" 
+        });
+      }
+
+      res.json(quote);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ 
+          message: "Données invalides", 
+          errors: error.errors 
+        });
+      } else {
+        console.error("Error updating quote:", error);
+        res.status(500).json({ 
+          message: "Erreur lors de la mise à jour du devis" 
+        });
+      }
     }
   });
 

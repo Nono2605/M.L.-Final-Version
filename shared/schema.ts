@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, varchar } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, varchar, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -12,13 +12,29 @@ export const quotes = pgTable("quotes", {
   email: varchar("email", { length: 255 }),
   telephone: varchar("telephone", { length: 50 }),
   whatsapp: varchar("whatsapp", { length: 50 }),
+  status: varchar("status", { length: 20 }).notNull().default("en_attente"),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
 export const insertQuoteSchema = createInsertSchema(quotes).omit({
   id: true,
+  status: true,
+  notes: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const updateQuoteSchema = createInsertSchema(quotes).pick({
+  status: true,
+  notes: true,
+}).extend({
+  status: z.enum(['en_attente', 'traite', 'annule'])
 });
 
 export type InsertQuote = z.infer<typeof insertQuoteSchema>;
+export type UpdateQuote = z.infer<typeof updateQuoteSchema>;
 export type Quote = typeof quotes.$inferSelect;
 
 export const users = pgTable("users", {
