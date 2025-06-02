@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Quote, UpdateQuote } from '@shared/schema';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,6 +13,7 @@ import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { AdminAuth } from '@/components/admin-auth';
 
 const statusLabels = {
   en_attente: 'En attente',
@@ -40,8 +41,27 @@ const projectTypeLabels = {
 export default function AdminPage() {
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    // Vérifier si l'utilisateur est déjà authentifié
+    const authStatus = localStorage.getItem('admin_authenticated');
+    if (authStatus === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('admin_authenticated');
+    setIsAuthenticated(false);
+  };
+
+  // Afficher la page d'authentification si pas connecté
+  if (!isAuthenticated) {
+    return <AdminAuth onAuthenticated={() => setIsAuthenticated(true)} />;
+  }
 
   const { data: quotes = [], isLoading } = useQuery<Quote[]>({
     queryKey: ['/api/quotes'],
@@ -114,9 +134,19 @@ export default function AdminPage() {
                 <p className="text-sm text-swiss-slate">Gestion des demandes de devis</p>
               </div>
             </div>
-            <Badge variant="outline" className="text-swiss-blue border-swiss-blue">
-              {stats.total} demande{stats.total > 1 ? 's' : ''}
-            </Badge>
+            <div className="flex items-center space-x-3">
+              <Badge variant="outline" className="text-swiss-blue border-swiss-blue">
+                {stats.total} demande{stats.total > 1 ? 's' : ''}
+              </Badge>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleLogout}
+                className="text-red-600 hover:text-red-700 hover:bg-red-50"
+              >
+                Déconnexion
+              </Button>
+            </div>
           </div>
         </div>
       </header>

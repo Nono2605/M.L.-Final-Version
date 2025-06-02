@@ -32,12 +32,7 @@ export default function LandingPage() {
                 <Mail className="w-4 h-4 mr-2" />
                 contact@suissetoiture.ch
               </div>
-              <a 
-                href="/admin" 
-                className="text-xs bg-swiss-blue text-white px-3 py-1 rounded-md hover:bg-blue-800 transition-colors"
-              >
-                Admin
-              </a>
+
             </div>
           </div>
         </div>
