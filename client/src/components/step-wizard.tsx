@@ -107,6 +107,10 @@ export function StepWizard() {
         };
       case 5:
         return { 
+          isValid: !!(formData.nom || formData.prenom) 
+        };
+      case 6:
+        return { 
           isValid: !!(formData.email || formData.telephone || formData.whatsapp) 
         };
       default:
@@ -118,7 +122,7 @@ export function StepWizard() {
     const validation = validateStep(currentStep);
     if (!validation.isValid) return;
 
-    if (currentStep === 5) {
+    if (currentStep === 6) {
       submitQuoteMutation.mutate(formData);
     }
 
@@ -447,19 +451,106 @@ function StepFour({ formData, updateFormData }: { formData: FormData; updateForm
             </p>
           </div>
           
-          <div>
-            <Label htmlFor="adresse" className="text-left block mb-2">
-              Adresse (facultatif)
-            </Label>
-            <Textarea
-              id="adresse"
-              value={formData.adresse}
-              onChange={(e) => updateFormData({ adresse: e.target.value })}
-              placeholder="Rue, ville, code postal..."
-              rows={3}
-            />
-            <p className="text-xs text-swiss-slate mt-1 text-left">
-              Pour un devis plus précis
+
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function StepFive({ formData, updateFormData }: { formData: FormData; updateFormData: (updates: Partial<FormData>) => void }) {
+  return (
+    <div className="text-center">
+      <h2 className="text-3xl font-bold text-gray-900 mb-4">
+        Vos coordonnées
+      </h2>
+      <p className="text-lg text-swiss-slate mb-8">
+        Pour établir votre devis personnalisé
+      </p>
+      
+      <Card className="max-w-2xl mx-auto">
+        <CardContent className="p-8 space-y-6">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="prenom" className="text-left block mb-2">
+                👤 Prénom
+              </Label>
+              <Input
+                id="prenom"
+                value={formData.prenom}
+                onChange={(e) => updateFormData({ prenom: e.target.value })}
+                placeholder="Votre prénom"
+              />
+            </div>
+            
+            <div>
+              <Label htmlFor="nom" className="text-left block mb-2">
+                👤 Nom
+              </Label>
+              <Input
+                id="nom"
+                value={formData.nom}
+                onChange={(e) => updateFormData({ nom: e.target.value })}
+                placeholder="Votre nom de famille"
+              />
+            </div>
+          </div>
+          
+          <div className="grid md:grid-cols-4 gap-4">
+            <div>
+              <Label htmlFor="numero" className="text-left block mb-2">
+                🏠 N°
+              </Label>
+              <Input
+                id="numero"
+                value={formData.numero}
+                onChange={(e) => updateFormData({ numero: e.target.value })}
+                placeholder="123"
+              />
+            </div>
+            
+            <div className="md:col-span-3">
+              <Label htmlFor="rue" className="text-left block mb-2">
+                🛣️ Rue
+              </Label>
+              <Input
+                id="rue"
+                value={formData.rue}
+                onChange={(e) => updateFormData({ rue: e.target.value })}
+                placeholder="Nom de la rue"
+              />
+            </div>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="codePostal" className="text-left block mb-2">
+                📮 Code postal
+              </Label>
+              <Input
+                id="codePostal"
+                value={formData.codePostal}
+                onChange={(e) => updateFormData({ codePostal: e.target.value })}
+                placeholder="1000"
+              />
+            </div>
+            
+            <div>
+              <Label htmlFor="ville" className="text-left block mb-2">
+                🏙️ Ville
+              </Label>
+              <Input
+                id="ville"
+                value={formData.ville}
+                onChange={(e) => updateFormData({ ville: e.target.value })}
+                placeholder="Lausanne"
+              />
+            </div>
+          </div>
+          
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <p className="text-sm text-blue-800">
+              ℹ️ Ces informations nous permettent d'établir un devis précis et de planifier notre intervention.
             </p>
           </div>
         </CardContent>
@@ -468,7 +559,7 @@ function StepFour({ formData, updateFormData }: { formData: FormData; updateForm
   );
 }
 
-function StepFive({ formData, updateFormData }: { formData: FormData; updateFormData: (updates: Partial<FormData>) => void }) {
+function StepSix({ formData, updateFormData }: { formData: FormData; updateFormData: (updates: Partial<FormData>) => void }) {
   return (
     <div className="text-center">
       <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -530,7 +621,7 @@ function StepFive({ formData, updateFormData }: { formData: FormData; updateForm
   );
 }
 
-function StepSix({ formData, onReset }: { formData: FormData; onReset: () => void }) {
+function StepSeven({ formData, onReset }: { formData: FormData; onReset: () => void }) {
   const serviceNames = {
     toiture: 'Toiture',
     facade: 'Façade',
@@ -584,10 +675,10 @@ function StepSix({ formData, onReset }: { formData: FormData; onReset: () => voi
               <span className="font-medium">Superficie :</span>
               <span>{formData.superficie} m²</span>
             </div>
-            {formData.adresse && (
+            {(formData.nom || formData.prenom || formData.rue || formData.ville) && (
               <div className="flex justify-between">
                 <span className="font-medium">Adresse :</span>
-                <span className="text-right">{formData.adresse}</span>
+                <span className="text-right">{formData.numero} {formData.rue}, {formData.codePostal} {formData.ville}</span>
               </div>
             )}
             

@@ -4,7 +4,7 @@ import { z } from "zod";
 
 export const quotes = pgTable("quotes", {
   id: serial("id").primaryKey(),
-  projectType: varchar("project_type", { length: 50 }).notNull(),
+  projectType: varchar("project_type", { length: 50 }).notNull().$type<'maison' | 'immeuble' | 'autre'>(),
   service: varchar("service", { length: 50 }).notNull(),
   subServices: text("sub_services").array().notNull(),
   superficie: integer("superficie").notNull(),
