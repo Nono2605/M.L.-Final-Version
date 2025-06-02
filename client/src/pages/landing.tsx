@@ -23,7 +23,7 @@ export default function LandingPage() {
               </a>
               <div>
                 <p className="text-sm text-swiss-slate">
-                  Votre expert en nettoyage professionnel à vapeur en Suisse
+                  Nettoyage écologique à vapeur
                 </p>
               </div>
             </div>
