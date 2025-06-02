@@ -8,9 +8,11 @@ export function Footer() {
           {/* Company Info */}
           <div className="md:col-span-2">
             <div className="flex items-center space-x-3 mb-4">
-              <div className="w-12 h-12 bg-swiss-blue rounded-lg flex items-center justify-center">
-                <Home className="w-6 h-6 text-white" />
-              </div>
+              <img 
+                src="/attached_assets/Logo_Mahmoud-02.png" 
+                alt="SuisseToiture Logo" 
+                className="h-12 w-auto filter brightness-0 invert"
+              />
               <div>
                 <h3 className="text-xl font-bold text-white">SuisseToiture®️</h3>
                 <p className="text-blue-200">Expert en nettoyage professionnel à vapeur</p>
