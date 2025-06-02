@@ -190,7 +190,7 @@ export function StepWizard() {
 }
 
 function StepOne({ formData, updateFormData }: { formData: FormData; updateFormData: (updates: Partial<FormData>) => void }) {
-  const selectProjectType = (type: 'maison' | 'immeuble') => {
+  const selectProjectType = (type: 'maison' | 'immeuble' | 'autre') => {
     updateFormData({ projectType: type });
   };
 
@@ -203,7 +203,7 @@ function StepOne({ formData, updateFormData }: { formData: FormData; updateFormD
         Sélectionnez le type de bâtiment pour lequel vous souhaitez nos services
       </p>
       
-      <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+      <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
         <Card 
           className={`cursor-pointer card-hover border-2 transition-all ${
             formData.projectType === 'maison' 
@@ -235,6 +235,23 @@ function StepOne({ formData, updateFormData }: { formData: FormData; updateFormD
             </div>
             <h3 className="text-xl font-semibold text-gray-900 mb-2">Immeuble</h3>
             <p className="text-swiss-slate">Immeubles résidentiels, bâtiments commerciaux</p>
+          </CardContent>
+        </Card>
+        
+        <Card 
+          className={`cursor-pointer card-hover border-2 transition-all ${
+            formData.projectType === 'autre' 
+              ? 'border-swiss-blue bg-blue-50' 
+              : 'border-gray-200 hover:border-swiss-blue'
+          }`}
+          onClick={() => selectProjectType('autre')}
+        >
+          <CardContent className="p-8 text-center">
+            <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Building2 className="w-8 h-8 text-swiss-blue" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">Autre</h3>
+            <p className="text-swiss-slate">Hangars, entrepôts, structures diverses</p>
           </CardContent>
         </Card>
       </div>

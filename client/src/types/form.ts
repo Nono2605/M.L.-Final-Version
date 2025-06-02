@@ -1,5 +1,5 @@
 export interface FormData {
-  projectType: 'maison' | 'immeuble' | '';
+  projectType: 'maison' | 'immeuble' | 'autre' | '';
   service: 'toiture' | 'facade' | 'terrasse' | '';
   subServices: string[];
   superficie: string;
