@@ -45,6 +45,12 @@ export default function AdminPage() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
+  // Toujours appeler useQuery, mais le désactiver si pas authentifié
+  const { data: quotes = [], isLoading } = useQuery<Quote[]>({
+    queryKey: ['/api/quotes'],
+    enabled: isAuthenticated, // Désactiver la requête si pas authentifié
+  });
+
   useEffect(() => {
     // Vérifier si l'utilisateur est déjà authentifié
     const authStatus = localStorage.getItem('admin_authenticated');
@@ -62,10 +68,6 @@ export default function AdminPage() {
   if (!isAuthenticated) {
     return <AdminAuth onAuthenticated={() => setIsAuthenticated(true)} />;
   }
-
-  const { data: quotes = [], isLoading } = useQuery<Quote[]>({
-    queryKey: ['/api/quotes'],
-  });
 
   const updateQuoteMutation = useMutation({
     mutationFn: async ({ id, updates }: { id: number; updates: UpdateQuote }) => {
