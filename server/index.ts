@@ -2,7 +2,25 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
+// Force HTTPS redirect
+function requireHTTPS(req: Request, res: Response, next: NextFunction) {
+  // Don't redirect in development
+  if (process.env.NODE_ENV === 'development') {
+    return next();
+  }
+  
+  // Check if request is already HTTPS
+  if (req.header('x-forwarded-proto') !== 'https') {
+    return res.redirect(`https://${req.header('host')}${req.url}`);
+  }
+  next();
+}
+
 const app = express();
+
+// Apply HTTPS redirect first
+app.use(requireHTTPS);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
