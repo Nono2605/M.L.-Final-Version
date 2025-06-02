@@ -107,7 +107,7 @@ export function StepWizard() {
         };
       case 5:
         return { 
-          isValid: !!(formData.nom || formData.prenom) 
+          isValid: true // Étape facultative pour les coordonnées personnelles
         };
       case 6:
         return { 
@@ -465,7 +465,7 @@ function StepFive({ formData, updateFormData }: { formData: FormData; updateForm
         Vos coordonnées
       </h2>
       <p className="text-lg text-swiss-slate mb-8">
-        Pour établir votre devis personnalisé
+        Pour établir votre devis personnalisé (facultatif)
       </p>
       
       <Card className="max-w-2xl mx-auto">
@@ -550,7 +550,7 @@ function StepFive({ formData, updateFormData }: { formData: FormData; updateForm
           
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <p className="text-sm text-blue-800">
-              ℹ️ Ces informations nous permettent d'établir un devis précis et de planifier notre intervention.
+              ℹ️ Ces informations sont facultatives mais nous aident à établir un devis plus précis et à planifier notre intervention.
             </p>
           </div>
         </CardContent>
@@ -612,7 +612,7 @@ function StepSix({ formData, updateFormData }: { formData: FormData; updateFormD
           
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
             <p className="text-sm text-yellow-800">
-              ℹ️ Au moins un moyen de contact est requis pour recevoir votre devis.
+              ⚠️ Au moins un moyen de contact (email ou téléphone) est requis pour recevoir votre devis.
             </p>
           </div>
         </CardContent>
