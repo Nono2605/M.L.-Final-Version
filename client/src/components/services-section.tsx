@@ -35,7 +35,7 @@ export function ServicesSection() {
                 </li>
                 <li className="flex items-start">
                   <span className="w-2 h-2 bg-swiss-blue rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                  Désinfection, traitement anti-odeurs, assainissement alimentaire
+                  Nettoyage de terrasses, balcons et surfaces extérieures
                 </li>
               </ul>
             </CardContent>
