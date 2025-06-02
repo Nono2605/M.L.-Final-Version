@@ -126,7 +126,7 @@ export function StepWizard() {
       submitQuoteMutation.mutate(formData);
     }
 
-    if (currentStep < 6) {
+    if (currentStep < 7) {
       setCurrentStep((prev) => (prev + 1) as FormStep);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -146,7 +146,7 @@ export function StepWizard() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const progressPercentage = (currentStep / 6) * 100;
+  const progressPercentage = (currentStep / 7) * 100;
   const canProceed = validateStep(currentStep).isValid;
 
   return (
@@ -155,7 +155,7 @@ export function StepWizard() {
       <div className="mb-8">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-swiss-slate">
-            Étape {currentStep} sur 6
+            Étape {currentStep} sur 7
           </span>
           <span className="text-sm text-swiss-slate">
             {stepTitles[currentStep - 1]}
