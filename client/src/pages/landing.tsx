@@ -139,9 +139,9 @@ export default function LandingPage() {
             Obtenez votre devis personnalisé en moins de 5 minutes
           </p>
           <Link href="/devis">
-            <Button size="lg" variant="secondary" className="text-lg px-8 py-4">
-              Commencer ma demande de devis
-              <ArrowRight className="w-5 h-5 ml-2" />
+            <Button size="lg" variant="secondary" className="text-base sm:text-lg px-4 sm:px-8 py-3 sm:py-4 w-full sm:w-auto max-w-xs sm:max-w-none mx-auto">
+              <span className="block sm:inline">Commencer ma demande de devis</span>
+              <ArrowRight className="w-5 h-5 ml-2 flex-shrink-0" />
             </Button>
           </Link>
           <div className="mt-8 flex flex-col sm:flex-row gap-6 justify-center text-blue-100 text-sm">
