@@ -51,14 +51,10 @@ export default function LandingPage() {
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-8">
               Nettoyage professionnel
               <span className="block text-swiss-blue">à vapeur en Suisse</span>
             </h1>
-            <p className="text-xl text-swiss-slate mb-8 max-w-3xl mx-auto">
-              Révolutionnez le nettoyage avec notre technologie vapeur mobile combinant haute pression 
-              et chaleur intense jusqu'à 150°C. Solution 100% écologique sans produits chimiques.
-            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link href="/devis">
                 <Button size="lg" className="bg-swiss-blue hover:bg-blue-800 text-lg px-8 py-4">
@@ -81,8 +77,9 @@ export default function LandingPage() {
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
               La Révolution du Nettoyage à la Vapeur
             </h2>
-            <p className="text-lg text-swiss-slate">
-              Technologie mobile combinant haute pression et chaleur intense pour un nettoyage optimal
+            <p className="text-lg text-swiss-slate mb-6">
+              Révolutionnez le nettoyage avec notre technologie vapeur mobile combinant haute pression 
+              et chaleur intense jusqu'à 150°C. Solution 100% écologique sans produits chimiques.
             </p>
           </div>
           
