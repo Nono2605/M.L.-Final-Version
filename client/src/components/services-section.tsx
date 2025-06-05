@@ -82,20 +82,24 @@ export function ServicesSection() {
                 <Trophy className="w-6 h-6 text-purple-600" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-4">
-                ✅ Bénéfices
+                ✅ Décontamination & Désinfection
               </h3>
               <ul className="space-y-3 text-swiss-slate">
                 <li className="flex items-start">
                   <span className="w-2 h-2 bg-swiss-blue rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                  Prolonge la durée de vie de vos bâtiments
+                  Décontamination des containers industriels
                 </li>
                 <li className="flex items-start">
                   <span className="w-2 h-2 bg-swiss-blue rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                  Préserve l'esthétique et la valeur
+                  Désinfection en profondeur pour espaces sains
                 </li>
                 <li className="flex items-start">
                   <span className="w-2 h-2 bg-swiss-blue rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                  Valorise votre image professionnelle
+                  Neutralisation des odeurs tenaces
+                </li>
+                <li className="flex items-start">
+                  <span className="w-2 h-2 bg-swiss-blue rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                  Retrait des revêtements endommagés
                 </li>
               </ul>
             </CardContent>

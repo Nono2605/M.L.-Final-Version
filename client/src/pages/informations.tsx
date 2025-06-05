@@ -74,11 +74,11 @@ export default function InformationsPage() {
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span>Lundi - Vendredi</span>
-                  <span>8h00 - 18h00</span>
+                  <span>9h00 - 17h00</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Samedi</span>
-                  <span>9h00 - 17h00</span>
+                  <span>Sur demande</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Dimanche</span>
@@ -98,14 +98,16 @@ export default function InformationsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-swiss-slate">
-                SuisseToiture®️ est une entreprise spécialisée dans le nettoyage professionnel à vapeur, 
-                active sur tout le territoire suisse. Avec 8 ans d'expérience dans le domaine, nous proposons 
-                des solutions écologiques et efficaces pour l'entretien de vos bâtiments.
+                SuisseToiture®️ révolutionne le nettoyage à la vapeur avec une solution mobile, 
+                combinant haute pression et chaleur intense pour un nettoyage optimal sans endommager les surfaces. 
+                En chauffant l'eau jusqu'à 150°C, notre machine génère une vapeur puissante qui déloge 
+                même les saletés les plus tenaces.
               </p>
               <p className="text-swiss-slate">
-                Notre approche respectueuse de l'environnement utilise uniquement la vapeur d'eau, 
-                sans aucun produit chimique, garantissant un nettoyage en profondeur tout en préservant 
-                vos surfaces et l'environnement.
+                La pression est ajustable jusqu'à 270 bars, permettant un nettoyage efficace des surfaces 
+                délicates comme des plus résistantes. Notre méthode est à la fois économique et écologique, 
+                utilisant uniquement de la vapeur d'eau à haute température, éliminant ainsi le recours 
+                aux produits chimiques et minimisant l'impact environnemental.
               </p>
             </CardContent>
           </Card>
@@ -116,23 +118,41 @@ export default function InformationsPage() {
               <CardTitle>Nos domaines d'expertise</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid md:grid-cols-3 gap-4">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div className="text-center p-4 bg-swiss-light rounded-lg">
-                  <h3 className="font-semibold text-gray-900 mb-2">Toitures</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">Bâtiments</h3>
                   <p className="text-sm text-swiss-slate">
-                    Nettoyage et entretien de tous types de toitures
+                    Façades, toitures, monuments historiques
                   </p>
                 </div>
                 <div className="text-center p-4 bg-swiss-light rounded-lg">
-                  <h3 className="font-semibold text-gray-900 mb-2">Façades</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">Nettoyage Urbain</h3>
                   <p className="text-sm text-swiss-slate">
-                    Ravalement et nettoyage de façades
+                    Graffitis, chewing-gums, surfaces publiques
                   </p>
                 </div>
                 <div className="text-center p-4 bg-swiss-light rounded-lg">
-                  <h3 className="font-semibold text-gray-900 mb-2">Terrasses</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">Décontamination</h3>
                   <p className="text-sm text-swiss-slate">
-                    Nettoyage de terrasses et surfaces extérieures
+                    Containers, désinfection, neutralisation odeurs
+                  </p>
+                </div>
+                <div className="text-center p-4 bg-swiss-light rounded-lg">
+                  <h3 className="font-semibold text-gray-900 mb-2">Décapage</h3>
+                  <p className="text-sm text-swiss-slate">
+                    Peinture, revêtements sans abîmer surfaces
+                  </p>
+                </div>
+                <div className="text-center p-4 bg-swiss-light rounded-lg">
+                  <h3 className="font-semibold text-gray-900 mb-2">Éradication</h3>
+                  <p className="text-sm text-swiss-slate">
+                    Algues, mousses, végétations envahissantes
+                  </p>
+                </div>
+                <div className="text-center p-4 bg-swiss-light rounded-lg">
+                  <h3 className="font-semibold text-gray-900 mb-2">Démonstration</h3>
+                  <p className="text-sm text-swiss-slate">
+                    Tests sur site pour prouver l'efficacité
                   </p>
                 </div>
               </div>
