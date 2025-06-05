@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ServicesSection } from '@/components/services-section';
 import { Footer } from '@/components/footer';
-import { Home, Mail, Phone, ArrowRight, CheckCircle, Star, Award } from 'lucide-react';
+import { Home, Mail, Phone, ArrowRight, CheckCircle, Star, Award, Thermometer, Leaf, Shield } from 'lucide-react';
 import { Link } from 'wouter';
 import logoPath from '@assets/Logo_Mahmoud-02.png';
 
@@ -56,8 +56,8 @@ export default function LandingPage() {
               <span className="block text-swiss-blue">à vapeur en Suisse</span>
             </h1>
             <p className="text-xl text-swiss-slate mb-8 max-w-3xl mx-auto">
-              Spécialistes du nettoyage écologique sans produits chimiques pour vos toitures, 
-              façades et terrasses. Service professionnel avec 8 ans d'expérience.
+              Révolutionnez le nettoyage avec notre technologie vapeur mobile combinant haute pression 
+              et chaleur intense jusqu'à 150°C. Solution 100% écologique sans produits chimiques.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link href="/devis">
@@ -79,23 +79,36 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Pourquoi choisir SuisseToiture®️ ?
+              La Révolution du Nettoyage à la Vapeur
             </h2>
             <p className="text-lg text-swiss-slate">
-              Une approche respectueuse de l'environnement et efficace
+              Technologie mobile combinant haute pression et chaleur intense pour un nettoyage optimal
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="text-center border-0 shadow-lg">
               <CardContent className="p-8">
+                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Thermometer className="w-8 h-8 text-red-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Haute Performance</h3>
+                <p className="text-swiss-slate">
+                  Vapeur jusqu'à 150°C et pression ajustable jusqu'à 270 bars 
+                  pour déloger les saletés les plus tenaces.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center border-0 shadow-lg">
+              <CardContent className="p-8">
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <CheckCircle className="w-8 h-8 text-green-600" />
+                  <Leaf className="w-8 h-8 text-green-600" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">100% Écologique</h3>
                 <p className="text-swiss-slate">
-                  Aucun produit chimique utilisé. Seule la vapeur d'eau haute pression 
-                  pour un nettoyage respectueux de l'environnement.
+                  Méthode révolutionnaire sans produits chimiques, 
+                  respectueuse des surfaces et de l'environnement.
                 </p>
               </CardContent>
             </Card>
@@ -103,25 +116,12 @@ export default function LandingPage() {
             <Card className="text-center border-0 shadow-lg">
               <CardContent className="p-8">
                 <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Star className="w-8 h-8 text-swiss-blue" />
+                  <Shield className="w-8 h-8 text-swiss-blue" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Économique</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Surfaces Préservées</h3>
                 <p className="text-swiss-slate">
-                  Faible consommation d'eau (-80%) et technique non abrasive qui 
-                  prolonge la durée de vie de vos surfaces.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center border-0 shadow-lg">
-              <CardContent className="p-8">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Award className="w-8 h-8 text-purple-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Expertise Certifiée</h3>
-                <p className="text-swiss-slate">
-                  8 ans d'expérience et techniciens certifiés pour un service 
-                  professionnel de qualité supérieure.
+                  Nettoyage en profondeur sans risque de dégradation, 
+                  adapté aux surfaces délicates et résistantes.
                 </p>
               </CardContent>
             </Card>

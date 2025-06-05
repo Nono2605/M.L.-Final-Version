@@ -7,10 +7,10 @@ export function ServicesSection() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Services de SuisseToiture®️
+            Domaines d'Application
           </h2>
           <p className="text-lg text-swiss-slate">
-            Découvrez notre expertise en nettoyage professionnel à vapeur
+            SuisseToiture®️ est le choix idéal pour des prestations de nettoyage variées
           </p>
         </div>
         
@@ -22,20 +22,24 @@ export function ServicesSection() {
                 <CheckCircle className="w-6 h-6 text-green-600" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-4">
-                ✅ Notre expertise
+                ✅ Bâtiments & Monuments
               </h3>
               <ul className="space-y-3 text-swiss-slate">
                 <li className="flex items-start">
                   <span className="w-2 h-2 bg-swiss-blue rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                  Nettoyage de façades, toitures, monuments historiques
+                  Nettoyage de façades pour redonner un coup de neuf
                 </li>
                 <li className="flex items-start">
                   <span className="w-2 h-2 bg-swiss-blue rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                  Élimination de graffitis, nettoyage urbain, décontamination
+                  Réhabilitation de monuments historiques sans altération
                 </li>
                 <li className="flex items-start">
                   <span className="w-2 h-2 bg-swiss-blue rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                  Nettoyage de terrasses, balcons et surfaces extérieures
+                  Nettoyage des toitures pour prolonger leur durée de vie
+                </li>
+                <li className="flex items-start">
+                  <span className="w-2 h-2 bg-swiss-blue rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                  Décapage de peinture sans abîmer les surfaces
                 </li>
               </ul>
             </CardContent>
@@ -48,24 +52,24 @@ export function ServicesSection() {
                 <Star className="w-6 h-6 text-swiss-blue" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-4">
-                ✅ Nos avantages
+                ✅ Nettoyage Urbain & Spécialisé
               </h3>
               <ul className="space-y-3 text-swiss-slate">
                 <li className="flex items-start">
                   <span className="w-2 h-2 bg-swiss-blue rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                  Techniciens certifiés (8 ans d'expérience)
+                  Suppression des graffitis de manière écologique
                 </li>
                 <li className="flex items-start">
                   <span className="w-2 h-2 bg-swiss-blue rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                  Aucun produit chimique
+                  Élimination des chewing-gums incrustés
                 </li>
                 <li className="flex items-start">
                   <span className="w-2 h-2 bg-swiss-blue rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                  Faible consommation d'eau (-80%)
+                  Nettoyage urbain efficace sans produits chimiques
                 </li>
                 <li className="flex items-start">
                   <span className="w-2 h-2 bg-swiss-blue rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                  Traitement doux, non abrasif pour tous matériaux
+                  Éradication des algues, mousses et végétations
                 </li>
               </ul>
             </CardContent>
