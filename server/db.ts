@@ -1,27 +1,10 @@
 
 import { Pool, neonConfig } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-serverless';
+import { drizzle as drizzlePg } from 'drizzle-orm/node-postgres';
+import { Pool as PgPool } from 'pg';
 import ws from "ws";
 import * as schema from "@shared/schema";
-
-// Détection de l'environnement local
-const isLocal = process.env.NODE_ENV !== 'production' || 
-               process.env.DATABASE_URL?.includes('localhost') ||
-               process.cwd().includes('ubuntu');
-
-if (isLocal) {
-  // Désactiver complètement WebSocket en local
-  neonConfig.webSocketConstructor = undefined;
-  neonConfig.wsProxy = undefined;
-  neonConfig.useSecureWebSocket = false;
-  
-  // Forcer connexion TCP classique
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-} else {
-  // WebSocket seulement en production
-  neonConfig.webSocketConstructor = ws;
-  neonConfig.useSecureWebSocket = true;
-}
 
 if (!process.env.DATABASE_URL) {
   throw new Error(
@@ -29,11 +12,33 @@ if (!process.env.DATABASE_URL) {
   );
 }
 
-// Configuration de connexion adaptée à l'environnement
-const poolConfig = {
-  connectionString: process.env.DATABASE_URL,
-  ssl: isLocal ? false : { rejectUnauthorized: false }
-};
+// Détection de l'environnement local
+const isLocal = process.env.NODE_ENV !== 'production' || 
+               process.env.DATABASE_URL?.includes('localhost') ||
+               process.cwd().includes('ubuntu');
 
-export const pool = new Pool(poolConfig);
-export const db = drizzle({ client: pool, schema });
+console.log(isLocal ? 'Using local PostgreSQL (no WebSocket)' : 'Using Neon WebSocket');
+
+let pool: Pool | PgPool;
+let db: ReturnType<typeof drizzle> | ReturnType<typeof drizzlePg>;
+
+if (isLocal) {
+  // Connexion PostgreSQL standard sans WebSocket
+  pool = new PgPool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: false
+  });
+  db = drizzlePg(pool, { schema });
+} else {
+  // Configuration Neon WebSocket pour la production
+  neonConfig.webSocketConstructor = ws;
+  neonConfig.useSecureWebSocket = true;
+  
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false }
+  });
+  db = drizzle({ client: pool, schema });
+}
+
+export { pool, db };
