@@ -1,5 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import { Server as SocketIOServer } from "socket.io";
 import { storage } from "./storage";
 import { insertQuoteSchema, updateQuoteSchema } from "@shared/schema";
 import { z } from "zod";
@@ -110,5 +111,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   const httpServer = createServer(app);
+  
+  // Configure Socket.io
+  const io = new SocketIOServer(httpServer, {
+    cors: {
+      origin: process.env.NODE_ENV === "development" ? "http://localhost:5173" : true,
+      methods: ["GET", "POST"]
+    }
+  });
+
+  // WebSocket event handlers
+  io.on('connection', (socket) => {
+    console.log('Client connected:', socket.id);
+    
+    socket.on('disconnect', () => {
+      console.log('Client disconnected:', socket.id);
+    });
+    
+    // Add your custom WebSocket events here
+  });
+
   return httpServer;
 }
