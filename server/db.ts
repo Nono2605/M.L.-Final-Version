@@ -35,10 +35,9 @@ if (isLocal) {
   neonConfig.useSecureWebSocket = true;
   
   pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false }
+    connectionString: process.env.DATABASE_URL
   });
-  db = drizzle({ client: pool, schema });
+  db = drizzle(pool, { schema });
 }
 
 export { pool, db };
