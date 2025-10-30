@@ -140,7 +140,7 @@ export default function PolitiqueConfidentialitePage() {
                 <li><strong>Droit de portabilité :</strong> récupérer vos données</li>
               </ul>
               <p className="mt-4">
-                Pour exercer ces droits, contactez-nous à : <strong>info@suissetoiture.ch</strong>
+                Pour exercer ces droits, contactez-nous à : <a href="mailto:info@suissetoiture.ch" className="text-swiss-blue hover:underline font-semibold">info@suissetoiture.ch</a>
               </p>
             </CardContent>
           </Card>
@@ -171,8 +171,8 @@ export default function PolitiqueConfidentialitePage() {
               </p>
               <div className="bg-swiss-light p-4 rounded-lg">
                 <p><strong>SuisseToiture®️</strong></p>
-                <p>Email : info@suissetoiture.ch</p>
-                <p>Téléphone : +41 78 690 33 34</p>
+                <p>Email : <a href="mailto:info@suissetoiture.ch" className="text-swiss-blue hover:underline">info@suissetoiture.ch</a></p>
+                <p>Téléphone : <a href="tel:+41786903334" className="text-swiss-blue hover:underline">+41 78 690 33 34</a></p>
               </div>
               <p>
                 Vous avez également le droit de déposer une plainte auprès du 

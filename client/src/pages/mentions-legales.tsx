@@ -50,10 +50,10 @@ export default function MentionsLegalesPage() {
                 <strong>Activité :</strong> Nettoyage professionnel à vapeur
               </div>
               <div>
-                <strong>Téléphone :</strong> +41 78 690 33 34
+                <strong>Téléphone :</strong> <a href="tel:+41786903334" className="text-swiss-blue hover:underline">+41 78 690 33 34</a>
               </div>
               <div>
-                <strong>Email :</strong> info@suissetoiture.ch
+                <strong>Email :</strong> <a href="mailto:info@suissetoiture.ch" className="text-swiss-blue hover:underline">info@suissetoiture.ch</a>
               </div>
               <div>
                 <strong>Zone d'intervention :</strong> Toute la Suisse
@@ -86,7 +86,7 @@ export default function MentionsLegalesPage() {
                 Les informations contenues sur ce site sont aussi précises que possible et le site remis à jour à différentes périodes de l'année, mais peut toutefois contenir des inexactitudes ou des omissions.
               </p>
               <p>
-                Si vous constatez une lacune, erreur ou ce qui parait être un dysfonctionnement, merci de bien vouloir le signaler par email, à l'adresse info@suissetoiture.ch, en décrivant le problème de la façon la plus précise possible.
+                Si vous constatez une lacune, erreur ou ce qui parait être un dysfonctionnement, merci de bien vouloir le signaler par email, à l'adresse <a href="mailto:info@suissetoiture.ch" className="text-swiss-blue hover:underline">info@suissetoiture.ch</a>, en décrivant le problème de la façon la plus précise possible.
               </p>
               <p>
                 Tout contenu téléchargé se fait aux risques et périls de l'utilisateur et sous sa seule responsabilité. En conséquence, SuisseToiture®️ ne saurait être tenu responsable d'un quelconque dommage subi par l'ordinateur de l'utilisateur ou d'une quelconque perte de données consécutives au téléchargement.

@@ -27,14 +27,14 @@ export default function HomePage() {
               </div>
             </div>
             <div className="hidden md:flex items-center space-x-6 text-sm text-swiss-slate">
-              <div className="flex items-center">
+              <a href="tel:+41786903334" className="flex items-center hover:text-swiss-blue transition-colors">
                 <Phone className="w-4 h-4 mr-2" />
                 +41 78 690 33 34
-              </div>
-              <div className="flex items-center">
+              </a>
+              <a href="mailto:info@suissetoiture.ch" className="flex items-center hover:text-swiss-blue transition-colors">
                 <Mail className="w-4 h-4 mr-2" />
                 info@suissetoiture.ch
-              </div>
+              </a>
 
             </div>
           </div>

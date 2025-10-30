@@ -47,14 +47,14 @@ export default function InformationsPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-center gap-3">
+              <a href="tel:+41786903334" className="flex items-center gap-3 hover:text-swiss-blue transition-colors">
                 <Phone className="w-4 h-4 text-swiss-slate" />
                 <span>+41 78 690 33 34</span>
-              </div>
-              <div className="flex items-center gap-3">
+              </a>
+              <a href="mailto:info@suissetoiture.ch" className="flex items-center gap-3 hover:text-swiss-blue transition-colors">
                 <Mail className="w-4 h-4 text-swiss-slate" />
                 <span>info@suissetoiture.ch</span>
-              </div>
+              </a>
               <div className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-swiss-slate mt-1" />
                 <span>Service dans toute la Suisse</span>
