@@ -1,6 +1,40 @@
 # Guide de Déploiement - SuisseToiture
 
-## Prérequis Ubuntu 22.04
+## 🚀 Déploiement Rapide (Script Automatique)
+
+```bash
+# 1. Installation des prérequis
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs postgresql postgresql-contrib
+sudo npm install -g pm2
+
+# 2. Configuration base de données
+sudo -u postgres psql
+CREATE DATABASE suissetoiture;
+CREATE USER suissetoiture_user WITH PASSWORD 'VOTRE_MOT_DE_PASSE';
+GRANT ALL PRIVILEGES ON DATABASE suissetoiture TO suissetoiture_user;
+\q
+
+# 3. Transférer les fichiers sur le serveur
+cd /var/www/suissetoiture
+# (Copier les fichiers ici via scp, rsync ou git)
+
+# 4. Configuration
+cp .env.example .env
+nano .env  # Éditer DATABASE_URL avec vos valeurs
+
+# 5. Déploiement automatique
+chmod +x deploy.sh
+./deploy.sh
+
+# ✅ L'application démarre automatiquement au boot !
+```
+
+---
+
+## 📋 Configuration Détaillée
+
+### 1. Prérequis Ubuntu 22.04
 
 ```bash
 # Mettre à jour le système
@@ -13,14 +47,14 @@ sudo apt install -y nodejs
 # Installer PostgreSQL
 sudo apt install -y postgresql postgresql-contrib
 
-# Installer PM2 (gestionnaire de processus)
+# Installer PM2 (gestionnaire de processus avec auto-start)
 sudo npm install -g pm2
 
-# Installer Nginx (optionnel, pour reverse proxy)
+# Installer Nginx (pour exposer votre domaine)
 sudo apt install -y nginx
 ```
 
-## Configuration de la Base de Données
+### 2. Configuration de la Base de Données
 
 ```bash
 # Se connecter à PostgreSQL
@@ -33,87 +67,75 @@ GRANT ALL PRIVILEGES ON DATABASE suissetoiture TO suissetoiture_user;
 \q
 ```
 
-## Déploiement de l'Application
+### 3. Transfert des Fichiers
 
 ```bash
-# 1. Cloner ou transférer le projet
-cd /var/www
-sudo mkdir -p suissetoiture
-sudo chown -R $USER:$USER suissetoiture
-cd suissetoiture
+# Créer le répertoire
+sudo mkdir -p /var/www/suissetoiture
+sudo chown -R $USER:$USER /var/www/suissetoiture
+cd /var/www/suissetoiture
 
-# 2. Copier les fichiers du projet (via scp, git, etc.)
-# Exemple avec scp:
-# scp -r /chemin/local/projet/* user@serveur:/var/www/suissetoiture/
+# Option A: Transfert SSH depuis votre machine locale
+scp -r /chemin/local/projet/* user@IP_SERVEUR:/var/www/suissetoiture/
 
-# 3. Installer les dépendances
-npm install --production=false
+# Option B: Git clone
+git clone https://github.com/votre-repo/suissetoiture.git .
+```
 
-# 4. Configurer les variables d'environnement
-cat > .env << EOF
+### 4. Configuration de l'Application
+
+```bash
+# Copier et éditer .env
+cp .env.example .env
+nano .env
+```
+
+Contenu du fichier `.env` :
+```env
 NODE_ENV=production
-DATABASE_URL=postgresql://suissetoiture_user:VOTRE_MOT_DE_PASSE_SECURISE@localhost:5432/suissetoiture
+DATABASE_URL=postgresql://suissetoiture_user:VOTRE_MOT_DE_PASSE@localhost:5432/suissetoiture
 PORT=5000
-EOF
+```
 
-# 5. Initialiser la base de données
+### 5. Build et Démarrage
+
+```bash
+# Option A: Script automatique (RECOMMANDÉ)
+chmod +x deploy.sh
+./deploy.sh
+
+# Option B: Manuel
+npm install
 npm run db:push
-
-# 6. Build de l'application
 npm run build
-
-# 7. Tester le démarrage
-npm start
-# Ctrl+C pour arrêter après vérification
-```
-
-## Démarrage avec PM2
-
-```bash
-# Créer le fichier de configuration PM2
-cat > ecosystem.config.js << EOF
-module.exports = {
-  apps: [{
-    name: 'suissetoiture',
-    script: 'dist/index.js',
-    instances: 1,
-    exec_mode: 'cluster',
-    env: {
-      NODE_ENV: 'production',
-      PORT: 5000
-    }
-  }]
-};
-EOF
-
-# Démarrer l'application avec PM2
 pm2 start ecosystem.config.js
-
-# Sauvegarder la configuration PM2
 pm2 save
-
-# Configurer PM2 pour démarrer au boot
 pm2 startup
-# Exécuter la commande affichée par PM2
-
-# Vérifier le statut
-pm2 status
-pm2 logs suissetoiture
 ```
 
-## Configuration Nginx (Reverse Proxy)
+Le script `deploy.sh` configure automatiquement :
+- ✅ Installation des dépendances
+- ✅ Synchronisation de la base de données
+- ✅ Build de l'application
+- ✅ Démarrage avec PM2
+- ✅ **Configuration du démarrage automatique au boot**
+
+---
+
+## 🌐 Configuration Nginx + Domaine
+
+### Créer la Configuration Nginx
 
 ```bash
-# Créer la configuration Nginx
 sudo nano /etc/nginx/sites-available/suissetoiture
-
-# Ajouter cette configuration:
 ```
+
+Ajouter cette configuration :
 
 ```nginx
 server {
     listen 80;
-    server_name votre-domaine.com www.votre-domaine.com;
+    server_name votre-domaine.ch www.votre-domaine.ch;
 
     location / {
         proxy_pass http://localhost:5000;
@@ -129,91 +151,253 @@ server {
 }
 ```
 
-```bash
-# Activer le site
-sudo ln -s /etc/nginx/sites-available/suissetoiture /etc/nginx/sites-enabled/
-sudo nginx -t
-sudo systemctl restart nginx
+### Activer le Site
 
-# Installer SSL avec Let's Encrypt (optionnel mais recommandé)
-sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d votre-domaine.com -d www.votre-domaine.com
+```bash
+# Activer la configuration
+sudo ln -s /etc/nginx/sites-available/suissetoiture /etc/nginx/sites-enabled/
+
+# Tester la configuration
+sudo nginx -t
+
+# Redémarrer Nginx
+sudo systemctl restart nginx
 ```
 
-## Commandes Utiles
+### Configurer SSL (HTTPS)
 
 ```bash
+# Installer Certbot
+sudo apt install -y certbot python3-certbot-nginx
+
+# Obtenir le certificat SSL (gratuit)
+sudo certbot --nginx -d votre-domaine.ch -d www.votre-domaine.ch
+
+# Renouvellement automatique déjà configuré par Certbot
+```
+
+---
+
+## 🔗 Pointer votre Domaine vers l'Instance
+
+### Chez votre Registrar DNS (Infomaniak, OVH, etc.)
+
+Créer les enregistrements DNS suivants :
+
+| Type  | Nom | Valeur          | TTL  |
+|-------|-----|-----------------|------|
+| A     | @   | IP_DE_VOTRE_VM  | 3600 |
+| A     | www | IP_DE_VOTRE_VM  | 3600 |
+
+**Exemple avec Infomaniak :**
+1. Aller dans Gestion DNS de votre domaine
+2. Ajouter un enregistrement A : `@` → `51.83.45.123`
+3. Ajouter un enregistrement A : `www` → `51.83.45.123`
+4. Attendre 5-10 minutes pour la propagation DNS
+
+**Vérifier la propagation :**
+```bash
+# Sur votre machine locale
+nslookup votre-domaine.ch
+ping votre-domaine.ch
+```
+
+---
+
+## 🛡️ Sécurité
+
+### Configurer le Pare-feu
+
+```bash
+# Autoriser les ports nécessaires
+sudo ufw allow 22     # SSH
+sudo ufw allow 80     # HTTP
+sudo ufw allow 443    # HTTPS
+sudo ufw enable
+```
+
+### Sauvegardes Automatiques
+
+```bash
+# Créer le script de sauvegarde
+sudo nano /etc/cron.daily/backup-suissetoiture
+```
+
+Contenu du script :
+```bash
+#!/bin/bash
+BACKUP_DIR=/var/backups/suissetoiture
+mkdir -p $BACKUP_DIR
+pg_dump -U suissetoiture_user suissetoiture > $BACKUP_DIR/db_$(date +%Y%m%d).sql
+find $BACKUP_DIR/db_*.sql -mtime +7 -delete
+```
+
+Rendre exécutable :
+```bash
+sudo chmod +x /etc/cron.daily/backup-suissetoiture
+```
+
+---
+
+## 📊 Commandes Utiles
+
+### Gestion PM2
+
+```bash
+# Voir le statut
+pm2 status
+
+# Voir les logs en temps réel
+pm2 logs suissetoiture
+
 # Redémarrer l'application
 pm2 restart suissetoiture
-
-# Voir les logs
-pm2 logs suissetoiture
 
 # Arrêter l'application
 pm2 stop suissetoiture
 
-# Mettre à jour l'application
+# Supprimer l'application de PM2
+pm2 delete suissetoiture
+```
+
+### Mise à Jour de l'Application
+
+```bash
 cd /var/www/suissetoiture
-git pull  # ou copier les nouveaux fichiers
-npm install
+
+# Récupérer les nouvelles versions
+git pull  # ou transférer les fichiers
+
+# Redéployer
+./deploy.sh
+
+# L'application redémarre automatiquement
+```
+
+### Vérifier que l'Application Tourne
+
+```bash
+# Via PM2
+pm2 status
+
+# Via curl
+curl http://localhost:5000
+
+# Via navigateur
+# http://IP_DE_VOTRE_SERVEUR:5000
+```
+
+### Base de Données
+
+```bash
+# Se connecter
+sudo -u postgres psql -d suissetoiture
+
+# Lister les devis
+SELECT * FROM quotes;
+
+# Compter les devis
+SELECT COUNT(*) FROM quotes;
+
+# Quitter
+\q
+```
+
+---
+
+## 🔧 Dépannage
+
+### L'application ne démarre pas
+
+```bash
+# Vérifier les logs
+pm2 logs suissetoiture
+
+# Vérifier que le build existe
+ls -la dist/
+
+# Rebuild
 npm run build
 pm2 restart suissetoiture
-
-# Vérifier l'état de la base de données
-sudo -u postgres psql -d suissetoiture -c "SELECT COUNT(*) FROM quotes;"
 ```
 
-## Sécurité
+### Problème de connexion à la base de données
 
 ```bash
-# Configurer le pare-feu
-sudo ufw allow 22    # SSH
-sudo ufw allow 80    # HTTP
-sudo ufw allow 443   # HTTPS
-sudo ufw enable
+# Vérifier que PostgreSQL tourne
+sudo systemctl status postgresql
 
-# Créer des sauvegardes automatiques de la base de données
-sudo nano /etc/cron.daily/backup-suissetoiture
+# Tester la connexion
+psql -U suissetoiture_user -d suissetoiture -h localhost
 
-# Ajouter ce script:
-#!/bin/bash
-pg_dump -U suissetoiture_user suissetoiture > /var/backups/suissetoiture_$(date +%Y%m%d).sql
-find /var/backups/suissetoiture_*.sql -mtime +7 -delete
-
-# Rendre le script exécutable
-sudo chmod +x /etc/cron.daily/backup-suissetoiture
+# Vérifier .env
+cat .env | grep DATABASE_URL
 ```
 
-## Résumé des Commandes de Build
+### Nginx ne se connecte pas à l'app
 
 ```bash
-# Installation
-npm install
+# Vérifier que l'app tourne sur le bon port
+pm2 status
 
-# Build
-npm run build
+# Tester en local
+curl http://localhost:5000
 
-# Démarrage production
-npm start
+# Vérifier la config Nginx
+sudo nginx -t
 
-# Ou avec PM2
-pm2 start ecosystem.config.js
+# Voir les logs Nginx
+sudo tail -f /var/log/nginx/error.log
 ```
 
-## Structure après Build
+---
+
+## 📦 Structure Finale
 
 ```
 /var/www/suissetoiture/
-├── dist/              # Application compilée
-│   ├── index.js      # Serveur backend
-│   └── client/       # Frontend compilé
+├── dist/                  # Application compilée (après build)
+│   ├── index.js          # Serveur backend
+│   └── client/           # Frontend compilé
+├── logs/                  # Logs PM2
+│   ├── out.log
+│   └── err.log
 ├── node_modules/
-├── package.json
-├── .env              # Variables d'environnement
-└── ecosystem.config.js  # Configuration PM2
+├── server/                # Code source backend
+├── client/                # Code source frontend
+├── shared/                # Types partagés
+├── .env                   # Variables d'environnement
+├── ecosystem.config.js    # Configuration PM2
+├── deploy.sh              # Script de déploiement
+└── package.json
 ```
 
-## Ports
+---
 
-- Application: 5000 (interne)
-- Nginx: 80 (HTTP) et 443 (HTTPS)
+## ✅ Checklist de Déploiement
+
+- [ ] Node.js 20.x installé
+- [ ] PostgreSQL installé et configuré
+- [ ] PM2 installé globalement
+- [ ] Base de données créée
+- [ ] Fichiers transférés sur le serveur
+- [ ] Fichier `.env` configuré
+- [ ] Script `deploy.sh` exécuté
+- [ ] Application accessible sur `http://localhost:5000`
+- [ ] Nginx installé et configuré
+- [ ] DNS pointant vers l'IP du serveur
+- [ ] SSL configuré (Certbot)
+- [ ] Pare-feu configuré
+- [ ] Sauvegardes automatiques configurées
+- [ ] Application accessible via `https://votre-domaine.ch` ✨
+
+---
+
+## 🎯 Résumé des Ports
+
+- **Application (interne)** : Port 5000
+- **Nginx (HTTP)** : Port 80
+- **Nginx (HTTPS)** : Port 443
+- **PostgreSQL** : Port 5432 (localhost uniquement)
+
+L'application tourne sur le port 5000 en local, et Nginx fait le reverse proxy pour exposer votre domaine sur les ports 80 (HTTP) et 443 (HTTPS).

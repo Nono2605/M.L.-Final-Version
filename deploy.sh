@@ -24,16 +24,38 @@ npm run build
 # Créer le dossier logs s'il n'existe pas
 mkdir -p logs
 
-# Redémarrer avec PM2 si installé
+# Démarrer avec PM2
 if command -v pm2 &> /dev/null; then
-    echo "♻️ Redémarrage avec PM2..."
+    echo "♻️ Démarrage avec PM2..."
+    
+    # Redémarrer ou démarrer l'application
     pm2 restart ecosystem.config.js || pm2 start ecosystem.config.js
+    
+    # Sauvegarder la configuration PM2
     pm2 save
-    echo "✅ Application déployée et démarrée avec PM2"
+    
+    # Configurer PM2 pour démarrage automatique au boot système
+    echo "🔧 Configuration du démarrage automatique..."
+    pm2 startup | grep -E "^sudo" | bash || true
+    
+    # Afficher le statut
+    echo ""
+    echo "✅ Application déployée et configurée avec PM2"
+    echo ""
     pm2 status
+    echo ""
+    echo "📊 L'application tourne sur http://localhost:5000"
+    echo "📝 Logs: pm2 logs suissetoiture"
+    echo "🔄 Redémarrer: pm2 restart suissetoiture"
+    
 else
-    echo "⚠️ PM2 n'est pas installé. Installation recommandée: sudo npm install -g pm2"
-    echo "✅ Build terminé. Démarrez l'application avec: npm start"
+    echo "⚠️  PM2 n'est pas installé!"
+    echo ""
+    echo "Pour un démarrage automatique, installez PM2:"
+    echo "  sudo npm install -g pm2"
+    echo "  ./deploy.sh"
+    echo ""
+    echo "✅ Build terminé. Démarrage manuel avec: npm start"
 fi
 
 echo ""

@@ -1,74 +1,127 @@
 # SuisseToiture - Application Web
 
-Application de gestion de devis pour services de nettoyage professionnel à vapeur.
+Application professionnelle de gestion de devis pour services de nettoyage à vapeur (façades, toitures, terrasses).
 
-## Déploiement Rapide sur Ubuntu 22.04
+## 🚀 Déploiement sur Ubuntu 22.04
 
-### Installation des Prérequis
+### Installation Rapide
 
 ```bash
-# Node.js 20
+# 1. Prérequis
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt install -y nodejs
-
-# PostgreSQL
-sudo apt install -y postgresql postgresql-contrib
-
-# PM2
+sudo apt install -y nodejs postgresql postgresql-contrib
 sudo npm install -g pm2
-```
 
-### Configuration Base de Données
-
-```bash
+# 2. Base de données
 sudo -u postgres psql
 CREATE DATABASE suissetoiture;
 CREATE USER suissetoiture_user WITH PASSWORD 'VOTRE_MOT_DE_PASSE';
 GRANT ALL PRIVILEGES ON DATABASE suissetoiture TO suissetoiture_user;
 \q
-```
 
-### Déploiement
-
-```bash
-# 1. Copier les fichiers sur le serveur
+# 3. Configuration
 cd /var/www/suissetoiture
-
-# 2. Installer les dépendances
-npm install
-
-# 3. Configurer .env
 cp .env.example .env
-# Éditer .env avec vos valeurs
+nano .env  # Éditer DATABASE_URL
 
-# 4. Initialiser la base de données
-npm run db:push
-
-# 5. Build
-npm run build
-
-# 6. Démarrer avec PM2
-pm2 start ecosystem.config.js
-pm2 save
-pm2 startup
+# 4. Déploiement automatique
+chmod +x deploy.sh
+./deploy.sh
 ```
 
-## Commandes de Build
+✅ **L'application démarre automatiquement au boot du serveur**
+
+---
+
+## 🌐 Exposer votre Domaine
+
+### 1. Installer Nginx
 
 ```bash
-npm install          # Installation des dépendances
-npm run build        # Build de production
-npm start            # Démarrage production (sans PM2)
-npm run db:push      # Sync du schéma de base de données
+sudo apt install -y nginx
 ```
 
-## Documentation Complète
+### 2. Configurer le Reverse Proxy
 
-Voir [DEPLOY.md](./DEPLOY.md) pour le guide complet incluant Nginx, SSL, sécurité et sauvegardes.
+```bash
+sudo nano /etc/nginx/sites-available/suissetoiture
+```
 
-## Technologies
+```nginx
+server {
+    listen 80;
+    server_name votre-domaine.ch www.votre-domaine.ch;
+    
+    location / {
+        proxy_pass http://localhost:5000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
 
-- **Frontend**: React + Vite + TailwindCSS
-- **Backend**: Node.js + Express
-- **Database**: PostgreSQL + Drizzle ORM
-- **Deployment**: PM2 + Nginx
+```bash
+sudo ln -s /etc/nginx/sites-available/suissetoiture /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
+### 3. Configurer SSL (HTTPS)
+
+```bash
+sudo apt install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d votre-domaine.ch -d www.votre-domaine.ch
+```
+
+### 4. Pointer votre DNS
+
+Chez votre registrar (Infomaniak, OVH, etc.), créer :
+
+| Type | Nom | Valeur              |
+|------|-----|---------------------|
+| A    | @   | IP_DE_VOTRE_SERVEUR |
+| A    | www | IP_DE_VOTRE_SERVEUR |
+
+---
+
+## 📋 Commandes Principales
+
+```bash
+pm2 status               # État de l'application
+pm2 logs suissetoiture   # Voir les logs
+pm2 restart suissetoiture # Redémarrer
+./deploy.sh              # Redéployer après modification
+```
+
+---
+
+## 📖 Documentation Complète
+
+Voir **[DEPLOY.md](./DEPLOY.md)** pour :
+- Guide détaillé de déploiement
+- Configuration Nginx avancée
+- Sécurité et pare-feu
+- Sauvegardes automatiques
+- Dépannage
+
+---
+
+## 🛠️ Technologies
+
+- **Frontend** : React + Vite + TailwindCSS + shadcn/ui
+- **Backend** : Node.js + Express
+- **Base de données** : PostgreSQL + Drizzle ORM
+- **Déploiement** : PM2 + Nginx + Let's Encrypt SSL
+- **Serveur** : Ubuntu 22.04 LTS
+
+---
+
+## 📞 Fonctionnalités
+
+✅ Formulaire de demande de devis  
+✅ Liens cliquables (email, téléphone, WhatsApp)  
+✅ Pages légales (Mentions légales, Politique de confidentialité)  
+✅ Responsive (mobile, tablette, desktop)  
+✅ Base de données PostgreSQL  
+✅ Démarrage automatique au boot (PM2)  
+✅ Prêt pour SSL/HTTPS
