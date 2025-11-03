@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { Server as SocketIOServer } from "socket.io";
 import { storage } from "./storage";
-import { insertQuoteSchema, updateQuoteSchema } from "@shared/schema";
+import { insertQuoteSchema, updateQuoteSchema, updateSettingsSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -107,6 +107,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
           message: "Erreur lors de la mise à jour du devis" 
         });
       }
+    }
+  });
+
+  // Get settings
+  app.get("/api/settings", async (req, res) => {
+    try {
+      const settings = await storage.getSettings();
+      res.json(settings);
+    } catch (error) {
+      console.error("Error fetching settings:", error);
+      res.status(500).json({ 
+        message: "Erreur lors de la récupération des paramètres" 
+      });
+    }
+  });
+
+  // Update settings
+  app.patch("/api/settings", async (req, res) => {
+    try {
+      const validatedData = updateSettingsSchema.parse(req.body);
+      const settings = await storage.updateSettings(validatedData);
+      res.json(settings);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ 
+          message: "Données invalides", 
+          errors: error.errors 
+        });
+      } else {
+        console.error("Error updating settings:", error);
+        res.status(500).json({ 
+          message: "Erreur lors de la mise à jour des paramètres" 
+        });
+      }
+    }
+  });
+
+  // Verify admin password
+  app.post("/api/admin/verify", async (req, res) => {
+    try {
+      const { password } = req.body;
+      const settings = await storage.getSettings();
+      
+      if (password === settings.adminPassword) {
+        res.json({ valid: true });
+      } else {
+        res.json({ valid: false });
+      }
+    } catch (error) {
+      console.error("Error verifying password:", error);
+      res.status(500).json({ 
+        message: "Erreur lors de la vérification du mot de passe" 
+      });
     }
   });
 

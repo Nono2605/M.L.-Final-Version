@@ -58,3 +58,43 @@ export const insertUserSchema = createInsertSchema(users).pick({
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
+
+export const settings = pgTable("settings", {
+  id: serial("id").primaryKey(),
+  adminPassword: varchar("admin_password", { length: 255 }).notNull().default("123456"),
+  adminEmail: varchar("admin_email", { length: 255 }),
+  clientEmailTemplate: text("client_email_template").notNull().default(`<h2>Confirmation de votre demande de devis</h2>
+<p>Bonjour {{prenom}} {{nom}},</p>
+<p>Nous avons bien reçu votre demande de devis pour votre projet de type <strong>{{projectType}}</strong>.</p>
+<p><strong>Détails de votre demande :</strong></p>
+<ul>
+  <li>Service : {{service}}</li>
+  <li>Superficie : {{superficie}} m²</li>
+  <li>Adresse : {{adresse}}</li>
+</ul>
+<p>Nous vous contacterons dans les plus brefs délais.</p>
+<p>Cordialement,<br>L'équipe SuisseToiture</p>`),
+  adminEmailTemplate: text("admin_email_template").notNull().default(`<h2>Nouvelle demande de devis</h2>
+<p>Une nouvelle demande de devis a été reçue :</p>
+<p><strong>Client :</strong> {{prenom}} {{nom}}<br>
+<strong>Email :</strong> {{email}}<br>
+<strong>Téléphone :</strong> {{telephone}}</p>
+<p><strong>Détails du projet :</strong></p>
+<ul>
+  <li>Type : {{projectType}}</li>
+  <li>Service : {{service}}</li>
+  <li>Superficie : {{superficie}} m²</li>
+  <li>Adresse : {{adresse}}</li>
+</ul>`),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const updateSettingsSchema = createInsertSchema(settings).pick({
+  adminPassword: true,
+  adminEmail: true,
+  clientEmailTemplate: true,
+  adminEmailTemplate: true,
+}).partial();
+
+export type UpdateSettings = z.infer<typeof updateSettingsSchema>;
+export type Settings = typeof settings.$inferSelect;
