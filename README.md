@@ -125,3 +125,136 @@ Voir **[DEPLOY.md](./DEPLOY.md)** pour :
 ✅ Base de données PostgreSQL  
 ✅ Démarrage automatique au boot (PM2)  
 ✅ Prêt pour SSL/HTTPS
+
+
+
+
+
+
+
+
+
+
+
+
+
+🚀 Procédure de Déploiement - SuisseToiture
+🧩 1. Connexion SSH depuis ton PC
+Depuis PowerShell ou VS Code Terminal, exécute :
+ssh -i "C:\Users\Arnau\OneDrive\Bureau\website\WebsiteBuilder\test.pem" ubuntu@IP_DE_TON_SERVEUR
+
+
+🔁 Exemple :
+ssh -i "C:\Users\Arnau\OneDrive\Bureau\website\WebsiteBuilder\test.pem" ubuntu@83.228.225.129
+
+
+🧱 2. Installation des dépendances sur le serveur
+sudo apt update && sudo apt upgrade -y
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs postgresql postgresql-contrib nginx
+sudo npm install -g pm2
+
+
+🗄️ 3. Configuration PostgreSQL
+
+sudo -u postgres psql
+
+CREATE DATABASE suissetoiture;
+CREATE USER suissetoiture_user WITH PASSWORD 'ton_mot_de_passe';
+GRANT ALL PRIVILEGES ON DATABASE suissetoiture TO suissetoiture_user;
+\q
+
+
+📁 4. Transfert du projet depuis ton PC
+Depuis ton dossier local :
+C:\Users\Arnau\OneDrive\Bureau\Mahmoud\SuisseToiturech
+Exécute :
+scp -r * ubuntu@IP_DE_TON_SERVEUR:/var/www/suissetoiture/
+
+
+⚙️ 5. Configuration de l’application
+Sur le serveur :
+cd /var/www/suissetoiture
+cp .env.example .env
+nano .env
+
+Exemple de contenu .env :
+NODE_ENV=production
+DATABASE_URL=postgresql://suissetoiture_user:ton_mot_de_passe@localhost:5432/suissetoiture
+PORT=5000
+
+
+🏗️ 6. Build et lancement
+npm install
+npm run db:push
+npm run build
+pm2 start dist/index.js --name suissetoiture
+pm2 save
+pm2 startup
+
+
+🌐 7. Configuration Nginx
+Créer le fichier :
+sudo nano /etc/nginx/sites-available/suissetoiture
+
+Coller :
+server {
+    listen 80;
+    server_name suissetoiture.ch www.suissetoiture.ch;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name suissetoiture.ch www.suissetoiture.ch;
+
+    ssl_certificate /etc/letsencrypt/live/www.suissetoiture.ch/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/www.suissetoiture.ch/privkey.pem;
+
+    location / {
+        proxy_pass http://localhost:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+Activer :
+sudo ln -s /etc/nginx/sites-available/suissetoiture /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl restart nginx
+
+
+🔒 8. SSL (Certbot)
+sudo apt install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d suissetoiture.ch -d www.suissetoiture.ch
+
+
+🌍 9. DNS
+Chez ton registrar (ex. Infomaniak) :
+TypeNomValeur (IP)TTLA@IP_DE_TON_SERVEUR3600AwwwIP_DE_TON_SERVEUR3600
+
+🧾 10. Vérifications finales
+# Vérifier que l’app tourne
+pm2 status
+
+# Vérifier le backend
+curl http://localhost:5000
+
+# Vérifier la config Nginx
+sudo nginx -t
+
+# Vérifier le domaine
+curl -I https://www.suissetoiture.ch
+
+
+✅ Si tout est bon, ton site sera accessible sur :
+https://www.suissetoiture.ch
+
+
+Souhaites-tu que je te fasse une version ultra-courte “résumé en 10 lignes” à coller dans ton README pour usage rapide ?

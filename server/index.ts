@@ -3,11 +3,11 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 // Force HTTPS redirect
+// Désactivé temporairement pour HTTP
 function requireHTTPS(req: Request, res: Response, next: NextFunction) {
-  // Don't redirect in development
-  if (process.env.NODE_ENV === 'development') {
-    return next();
-  }
+  next();
+
+
   
   // Check if request is already HTTPS
   if (req.header('x-forwarded-proto') !== 'https') {
