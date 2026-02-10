@@ -1,43 +1,19 @@
-
+// server/db.ts
 import { Pool, neonConfig } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-serverless';
-import { drizzle as drizzlePg } from 'drizzle-orm/node-postgres';
-import { Pool as PgPool } from 'pg';
-import ws from "ws";
-import * as schema from "@shared/schema";
+import * as schema from '@shared/schema';
 
 if (!process.env.DATABASE_URL) {
   throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
+    "DATABASE_URL must be set. Did you forget to provision a database?"
   );
 }
 
-// Détection de l'environnement local
-const isLocal = process.env.NODE_ENV !== 'production' || 
-               process.env.DATABASE_URL?.includes('localhost') ||
-               process.cwd().includes('ubuntu');
+// Désactiver WebSocket (Vercel serverless)
+neonConfig.webSocketConstructor = undefined;
 
-console.log(isLocal ? 'Using local PostgreSQL (no WebSocket)' : 'Using Neon WebSocket');
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
 
-let pool: Pool | PgPool;
-let db: ReturnType<typeof drizzle> | ReturnType<typeof drizzlePg>;
-
-if (isLocal) {
-  // Connexion PostgreSQL standard sans WebSocket
-  pool = new PgPool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: false
-  });
-  db = drizzlePg(pool, { schema });
-} else {
-  // Configuration Neon WebSocket pour la production
-  neonConfig.webSocketConstructor = ws;
-  neonConfig.useSecureWebSocket = true;
-  
-  pool = new Pool({
-    connectionString: process.env.DATABASE_URL
-  });
-  db = drizzle(pool, { schema });
-}
-
-export { pool, db };
+export const db = drizzle(pool, { schema });
