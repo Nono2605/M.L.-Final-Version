@@ -1,9 +1,21 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { db } from '../server/db';
-import { settings } from '@shared/schema';
+// /api/admin.ts
+import { storage } from '@/server/storage';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-export async function POST(req: NextRequest) {
-  const { password } = await req.json();
-  const [current] = await db.select().from(settings).limit(1);
-  return NextResponse.json({ valid: password === current?.adminPassword });
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (req.method === 'POST') {
+    try {
+      const { password } = req.body;
+      const settings = await storage.getSettings();
+      if (password === settings.adminPassword) {
+        res.status(200).json({ valid: true });
+      } else {
+        res.status(200).json({ valid: false });
+      }
+    } catch (err) {
+      res.status(500).json({ error: 'Error verifying password' });
+    }
+  } else {
+    res.status(405).json({ error: 'Method Not Allowed' });
+  }
 }

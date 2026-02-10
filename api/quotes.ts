@@ -1,20 +1,25 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { db } from '../server/db';
-import { insertQuoteSchema, quotes } from '@shared/schema';
-import { desc } from 'drizzle-orm';
+// /api/quotes.ts
+import { insertQuoteSchema } from '@shared/schema';
+import { storage } from '@/server/storage';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-export async function POST(req: NextRequest) {
-  const body = await req.json();
-  try {
-    const validated = insertQuoteSchema.parse(body);
-    const [quote] = await db.insert(quotes).values(validated).returning();
-    return NextResponse.json(quote);
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 400 });
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (req.method === 'POST') {
+    try {
+      const validatedData = insertQuoteSchema.parse(req.body);
+      const quote = await storage.createQuote(validatedData);
+      res.status(200).json(quote);
+    } catch (err: any) {
+      res.status(400).json({ error: err.message });
+    }
+  } else if (req.method === 'GET') {
+    try {
+      const quotes = await storage.getAllQuotes();
+      res.status(200).json(quotes);
+    } catch (err) {
+      res.status(500).json({ error: 'Failed to fetch quotes' });
+    }
+  } else {
+    res.status(405).json({ error: 'Method Not Allowed' });
   }
-}
-
-export async function GET() {
-  const allQuotes = await db.select().from(quotes).orderBy(desc(quotes.createdAt));
-  return NextResponse.json(allQuotes);
 }
