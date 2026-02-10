@@ -1,25 +1,35 @@
-// /api/quotes.ts
-import { insertQuoteSchema } from '@shared/schema';
-import { storage } from '@/server/storage';
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { insertQuoteSchema, updateQuoteSchema } from "../shared/schema";
+import { storage } from "../server/storage";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method === 'POST') {
-    try {
-      const validatedData = insertQuoteSchema.parse(req.body);
-      const quote = await storage.createQuote(validatedData);
-      res.status(200).json(quote);
-    } catch (err: any) {
-      res.status(400).json({ error: err.message });
+  try {
+    if (req.method === "POST") {
+      const validated = insertQuoteSchema.parse(req.body);
+      const quote = await storage.createQuote(validated);
+      return res.status(200).json(quote);
     }
-  } else if (req.method === 'GET') {
-    try {
+
+    if (req.method === "GET") {
       const quotes = await storage.getAllQuotes();
-      res.status(200).json(quotes);
-    } catch (err) {
-      res.status(500).json({ error: 'Failed to fetch quotes' });
+      return res.status(200).json(quotes);
     }
-  } else {
-    res.status(405).json({ error: 'Method Not Allowed' });
+
+    if (req.method === "PATCH") {
+      const id = Number(req.query.id);
+      if (!Number.isFinite(id)) return res.status(400).json({ message: "ID invalide" });
+
+      const validated = updateQuoteSchema.parse(req.body);
+      const quote = await storage.updateQuote(id, validated);
+      if (!quote) return res.status(404).json({ message: "Devis non trouvé" });
+
+      return res.status(200).json(quote);
+    }
+
+    res.setHeader("Allow", "GET,POST,PATCH");
+    return res.status(405).json({ error: "Method Not Allowed" });
+  } catch (err: any) {
+    // Zod errors etc.
+    return res.status(400).json({ error: err?.message ?? "Invalid request" });
   }
 }
