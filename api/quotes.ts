@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { insertQuoteSchema, updateQuoteSchema } from "../shared/schema";
+import { insertQuoteSchema, updateQuoteSchema } from "@shared/schema";
 import { storage } from "../server/storage";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -29,7 +29,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.setHeader("Allow", "GET,POST,PATCH");
     return res.status(405).json({ error: "Method Not Allowed" });
   } catch (err: any) {
-    // Zod errors etc.
     return res.status(400).json({ error: err?.message ?? "Invalid request" });
   }
 }
