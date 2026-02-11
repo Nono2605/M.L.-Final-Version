@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { insertQuoteSchema, updateQuoteSchema } from "../shared/schema";
+import { insertQuoteSchema, updateQuoteSchema } from "../server/schema";
 import { storage } from "../server/storage";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
