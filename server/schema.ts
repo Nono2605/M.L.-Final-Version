@@ -60,7 +60,6 @@ export const settings = pgTable("settings", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-
 // TYPES (✅ ce qui te manque)
 export type Quote = InferSelectModel<typeof quotes>;
 export type InsertQuote = InferInsertModel<typeof quotes>;
