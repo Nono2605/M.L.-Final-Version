@@ -1,17 +1,23 @@
 import nodemailer from "nodemailer";
 
-function mustEnv(name: string): string {
+function getEnv(name: string): string | undefined {
   const v = process.env[name];
-  if (!v) throw new Error(`${name} must be set`);
-  return v;
+  return v && v.trim() ? v : undefined;
 }
 
-export const transporter = nodemailer.createTransport({
-  host: mustEnv("SMTP_HOST"),
-  port: Number(mustEnv("SMTP_PORT")), // 465
-  secure: true, // true pour 465
-  auth: {
-    user: mustEnv("SMTP_USER"),
-    pass: mustEnv("SMTP_PASS"),
-  },
-});
+export function getTransporter() {
+  const host = getEnv("SMTP_HOST");
+  const port = getEnv("SMTP_PORT");
+  const user = getEnv("SMTP_USER");
+  const pass = getEnv("SMTP_PASS");
+
+  // Pas configuré => pas de crash
+  if (!host || !port || !user || !pass) return null;
+
+  return nodemailer.createTransport({
+    host,
+    port: Number(port),
+    secure: Number(port) === 465,
+    auth: { user, pass },
+  });
+}
