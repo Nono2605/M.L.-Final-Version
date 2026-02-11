@@ -7,17 +7,19 @@ function getEnv(name: string): string | undefined {
 
 export function getTransporter() {
   const host = getEnv("SMTP_HOST");
-  const port = getEnv("SMTP_PORT");
+  const portStr = getEnv("SMTP_PORT");
   const user = getEnv("SMTP_USER");
   const pass = getEnv("SMTP_PASS");
+  if (!host || !portStr || !user || !pass) return null;
 
-  // Pas configuré => pas de crash
-  if (!host || !port || !user || !pass) return null;
+  const port = Number(portStr);
+  const secure = port === 465;
 
   return nodemailer.createTransport({
     host,
-    port: Number(port),
-    secure: Number(port) === 465,
+    port,
+    secure, // true seulement pour 465
     auth: { user, pass },
+    requireTLS: port === 587, // utile pour 587
   });
 }
