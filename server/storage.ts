@@ -1,12 +1,13 @@
 import {
   quotes,
+  settings,
   type Quote,
   type InsertQuote,
   type UpdateQuote,
-  settings,
   type Settings,
   type UpdateSettings,
-} from "../shared/schema";
+} from "./schema";
+
 import { db } from "./db";
 import { eq, desc } from "drizzle-orm";
 
@@ -26,10 +27,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createQuote(insertQuote: InsertQuote): Promise<Quote> {
-    const [quote] = await db
-      .insert(quotes)
-      .values(insertQuote)
-      .returning();
+    const [quote] = await db.insert(quotes).values(insertQuote).returning();
     return quote;
   }
 
@@ -48,27 +46,24 @@ export class DatabaseStorage implements IStorage {
 
   async getSettings(): Promise<Settings> {
     const [existingSettings] = await db.select().from(settings).limit(1);
-    
+
     if (!existingSettings) {
-      const [newSettings] = await db
-        .insert(settings)
-        .values({})
-        .returning();
+      const [newSettings] = await db.insert(settings).values({}).returning();
       return newSettings;
     }
-    
+
     return existingSettings;
   }
 
   async updateSettings(updates: UpdateSettings): Promise<Settings> {
     const existingSettings = await this.getSettings();
-    
+
     const [updatedSettings] = await db
       .update(settings)
       .set({ ...updates, updatedAt: new Date() })
       .where(eq(settings.id, existingSettings.id))
       .returning();
-    
+
     return updatedSettings;
   }
 }

@@ -7,3 +7,6 @@ vite.config.ts.*
 .env
 logs
 *.log
+shared/*.js
+shared/*.js.map
+shared/*.d.ts
