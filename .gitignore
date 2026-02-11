@@ -10,3 +10,10 @@ logs
 shared/*.js
 shared/*.js.map
 shared/*.d.ts
+api/*.js
+api/*.js.map
+api/*.d.ts
+server/*.js
+server/*.js.map
+shared/*.js
+shared/*.js.map
